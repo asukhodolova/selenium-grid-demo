@@ -1,5 +1,19 @@
 # selenium-grid-demo
 
+## Running the tests
+
+### Safari
+Before running Safari tests, perform following commands to Allow Remote Automation:
+
+`defaults write com.apple.Safari AllowRemoteAutomation 1`
+`sudo safaridriver --enable`
+
+### Mobile
+
+Download applications and put them into ./src/test/resources/apps directory.
+iOS: https://github.com/saucelabs/my-demo-app-ios/releases/download/1.3.0/SauceLabs-Demo-App.Simulator.zip
+Android: https://github.com/saucelabs/my-demo-app-android/releases/download/1.0.13/mda-1.0.13-15.apk
+
 ## Registering a Webdriver service in GRID 4
 
 In a fresh implementation of Grid, a connection of non-browser WebDrivers is implemented via **_relay_**. 
@@ -8,10 +22,6 @@ This service endpoint can be an Appium server or any other service (Sauce Labs, 
 
 ![architecture](./src/test/resources/images/relay_node.png)
 
-Before running Safari tests, perform following commands to Allow Remote Automation:
-
-`defaults write com.apple.Safari AllowRemoteAutomation 1`
-`sudo safaridriver --enable`
 
 ### Hub & Node for Appium and browsers (on the same machine)
 
