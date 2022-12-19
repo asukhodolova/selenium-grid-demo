@@ -1,0 +1,39 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Selenium Grid Demo Suite" parallel="tests" thread-count="5">
+
+    <test name="Chrome Test">
+        <parameter name="browser" value="chrome"></parameter>
+        <classes>
+            <class name="com.solvd.demo.gui.WebUITest"/>
+        </classes>
+    </test>
+
+    <test name="Firefox Test">
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="com.solvd.demo.gui.WebUITest"/>
+        </classes>
+    </test>
+
+    <test name="Safari Test">
+        <parameter name="browser" value="safari"></parameter>
+        <classes>
+            <class name="com.solvd.demo.gui.WebUITest"/>
+        </classes>
+    </test>
+
+    <test name="iOS Test">
+        <parameter name="platformName" value="ios"></parameter>
+        <classes>
+            <class name="com.solvd.demo.mobile.MobileTest"/>
+        </classes>
+    </test>
+
+    <test name="Android Test">
+        <parameter name="platformName" value="android"></parameter>
+        <classes>
+            <class name="com.solvd.demo.mobile.MobileTest"/>
+        </classes>
+    </test>
+
+</suite>
