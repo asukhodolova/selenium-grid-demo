@@ -4,15 +4,15 @@
 
 ### Safari
 Before running Safari tests, perform following commands to Allow Remote Automation:
-
-`defaults write com.apple.Safari AllowRemoteAutomation 1`
-`sudo safaridriver --enable`
-
+```
+defaults write com.apple.Safari AllowRemoteAutomation 1
+sudo safaridriver --enable
+```
 ### Mobile
 
-Download applications and put them into ./src/test/resources/apps directory.
-iOS: https://github.com/saucelabs/my-demo-app-ios/releases/download/1.3.0/SauceLabs-Demo-App.Simulator.zip
-Android: https://github.com/saucelabs/my-demo-app-android/releases/download/1.0.13/mda-1.0.13-15.apk
+Download applications and put them into ./src/test/resources/apps directory:
+- iOS: https://github.com/saucelabs/my-demo-app-ios/releases/download/1.3.0/SauceLabs-Demo-App.Simulator.zip
+- Android: https://github.com/saucelabs/my-demo-app-android/releases/download/1.0.13/mda-1.0.13-15.apk
 
 ## Registering a Webdriver service in GRID 4
 
@@ -33,9 +33,11 @@ This service endpoint can be an Appium server or any other service (Sauce Labs, 
 2. start Appium, which will be connected to nodes;
 3. start Selenium Grid `java -jar selenium-server-4.7.0.jar hub` - connected to http://192.168.88.25:4444 by default;
 4. start Selenium Grid Nodes with prepared configuration:
-   `java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 5555 --config ./src/test/resources/configs/local/ios_node.toml`
-   `java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 6666 --config ./src/test/resources/configs/local/android_node.toml`
-   `java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 7777 --config ./src/test/resources/configs/local/browsers_node.toml`
+```
+   java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 5555 --config ./src/test/resources/configs/local/ios_node.toml
+   java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 6666 --config ./src/test/resources/configs/local/android_node.toml
+   java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 7777 --config ./src/test/resources/configs/local/browsers_node.toml
+```
 5. check connected nodes via http://localhost:4444/ui
 6. run the tests using `gradle test` or by running _**src/test/resources/testng.xml**_ file directly
 
