@@ -1,6 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Selenium Grid Demo Suite" parallel="tests" thread-count="5">
 
+    <parameter name="platform" value="MAC"></parameter>
+    <!--<parameter name="platform" value="LINUX"></parameter>-->
+
     <test name="Chrome Test">
         <parameter name="browser" value="chrome"></parameter>
         <classes>

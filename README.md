@@ -6,6 +6,7 @@
 Before running Safari tests, perform following commands to Allow Remote Automation:
 ```
 defaults write com.apple.Safari AllowRemoteAutomation 1
+
 sudo safaridriver --enable
 ```
 ### Mobile
@@ -13,6 +14,8 @@ sudo safaridriver --enable
 Download applications and put them into ./src/test/resources/apps directory:
 - iOS: https://github.com/saucelabs/my-demo-app-ios/releases/download/1.3.0/SauceLabs-Demo-App.Simulator.zip
 - Android: https://github.com/saucelabs/my-demo-app-android/releases/download/1.0.13/mda-1.0.13-15.apk
+
+Run the tests using `gradle test` or by running _**src/test/resources/testng.xml**_ file directly
 
 ## Registering a Webdriver service in GRID 4
 
@@ -23,7 +26,7 @@ This service endpoint can be an Appium server or any other service (Sauce Labs, 
 ![architecture](./src/test/resources/images/relay_node.png)
 
 
-### Hub & Node for Appium and browsers (on the same machine)
+### Hub & Node for Appium and browsers (locally on the same machine)
 
 1. download Selenium Grid https://www.selenium.dev/downloads/
 2. create a .toml configuration file where you set the Appium URL in the relay section and available environments in the config block;
@@ -39,7 +42,6 @@ This service endpoint can be an Appium server or any other service (Sauce Labs, 
    java -jar selenium-server-4.7.0.jar node --hub http://192.168.88.25:4444 --port 7777 --config ./src/test/resources/configs/local/browsers_node.toml
 ```
 5. check connected nodes via http://localhost:4444/ui
-6. run the tests using `gradle test` or by running _**src/test/resources/testng.xml**_ file directly
 
 ### Hub & Node for browsers (in Docker)
  
@@ -63,7 +65,13 @@ To record your WebDriver session, you need to add a `se:recordVideo` field set t
 3. stop the execution: hit Ctrl+C and then `docker-compose -f docker-compose-dynamic-grid.yml down`
 4. videos are saved to ./assets folder
 
-**NOTE**: does not work for browsers -> `SessionNotCreatedException Could not start a new session. non-positive contentLength: 0`, introduced in 4.6, will be fixed in 4.8 (see https://github.com/SeleniumHQ/selenium/issues/11342), works for 4.5 version.
+**Known issues**: 
+- `SessionNotCreatedException Could not start a new session. non-positive contentLength: 0`, introduced in 4.6, will be fixed in 4.8 (see https://github.com/SeleniumHQ/selenium/issues/11342), works for 4.5 version
+- `unknown error: DevToolsActivePort file doesn't exist` for Chrome browser when running on Mac M1
+
+### Distributed for browsers (in Docker)
+
+`docker-compose -f docker-compose-full-grid.yml up`
 
 
 ## Differences with GRID 3
@@ -71,5 +79,16 @@ To record your WebDriver session, you need to add a `se:recordVideo` field set t
 - hub url without /wd/hub
 - can be used with Docker and Kubernetes
 - Selenium WebDriver in Selenium 4 is W3C Compliant, the tests can directly communicate with the web browser (WebDriver and web browsers are on the same page now -> you can expect less flakiness)
+- based on the point above, stop using DesiredCapabilities (this class is deprecated), instead we have to use FirefoxOptions, ChromeOptions etc.
+- an up-to-date list of standard capabilities can be found at [W3C WebDriver](https://www.w3.org/TR/webdriver1/#capabilities), any capability that is not contained in the list above, needs to include a vendor prefix
 - automatically detects the Selenium drivers you have in the system. It is recommended that either all the executables are in the PATH or in the folder where the Selenium jar file is present
+- Selenium Manager is introduced
 - node registration changed: Selenium 3 - via http calls, Selenium 4 - done through Event bus messages
+- changes in methods or their deprecation:
+  - Find element(s) utility methods in Java have changed
+  - Waits and Timeout: the parameters received in Timeout have switched from expecting (long time, TimeUnit unit) to expect (Duration duration), same for WebDriverWait/FluentWait
+  - Merging capabilities is no longer changing the calling object
+  - new methods in Actions
+- new in Grid 4
+  - screenshot of an element
+  - relative locators

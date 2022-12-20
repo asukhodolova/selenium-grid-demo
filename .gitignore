@@ -35,6 +35,7 @@ target/
 out/
 test-output/
 assets/
+src/test/resources/apps
 
 .settings
 .project

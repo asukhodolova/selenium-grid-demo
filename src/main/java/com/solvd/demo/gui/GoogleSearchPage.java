@@ -31,7 +31,7 @@ public class GoogleSearchPage extends BasePage {
     }
 
     public GoogleSearchResultsPage performSearch(String searchValue) {
-        waitForElementPresent(SEARCH_INPUT_LOCATOR);
+        wait(3);
         searchInput.sendKeys(searchValue);
         searchInput.sendKeys(Keys.ENTER);
         return new GoogleSearchResultsPage(driver);

@@ -39,4 +39,12 @@ public abstract class BasePage {
     protected void waitForElementPresent(String xpathLocator) {
         new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_WAIT)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathLocator)));
     }
+
+    protected void wait(int seconds) {
+        try {
+            Thread.sleep(1000 * seconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
