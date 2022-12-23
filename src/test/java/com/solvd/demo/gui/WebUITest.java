@@ -1,7 +1,9 @@
 package com.solvd.demo.gui;
 
 import com.solvd.demo.BaseTest;
+import com.solvd.demo.utils.WaitUtils;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -12,7 +14,6 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 
 import static org.testng.Assert.assertTrue;
 
@@ -39,19 +40,22 @@ public class WebUITest extends BaseTest {
                 options = new FirefoxOptions();
                 options.setPlatformName(platform);
                 break;
+            case "edge":
+                options = new EdgeOptions();
+                break;
             default:
                 throw new RuntimeException("Unrecognized browser: " + browser);
         }
         try {
+            //options.setImplicitWaitTimeout(Duration.ofSeconds(DEFAULT_IMPLICIT_WAIT));
             options.setCapability("se:recordVideo", "true");
             options.setCapability("se:timeZone", "US/Pacific");
             options.setCapability("se:screenResolution", "1920x1080");
             driver = new RemoteWebDriver(new URL(SELENIUM_URL), options);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Error while creating a session");
+            throw new RuntimeException("Error while creating a session", e);
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(DEFAULT_IMPLICIT_WAIT));
         driver.manage().window().maximize();
     }
 
@@ -59,6 +63,8 @@ public class WebUITest extends BaseTest {
     public void testGoogleSearch() {
         LOGGER.info("---TEST is started---");
         String firstResult = new GoogleSearchPage(driver).open().performSearch(SEARCH_VALUE).getFirstSearchResult();
+
+        WaitUtils.wait(5);
         assertTrue(firstResult.contains(SEARCH_VALUE), "Search result does not include " + SEARCH_VALUE);
         LOGGER.info("---TEST is finished---");
     }

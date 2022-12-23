@@ -1,6 +1,6 @@
 package com.solvd.demo.gui;
 
-import com.solvd.demo.BasePage;
+import com.solvd.demo.utils.ScreenshotUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -19,7 +19,9 @@ public class GoogleSearchResultsPage extends BasePage {
     }
 
     public String getFirstSearchResult() {
+        ScreenshotUtils.takeScreenshot(driver);
         waitForElementPresent(SEARCH_RESULT_LINK_LOCATOR);
+        ScreenshotUtils.takeElementScreenshot(driver, searchResultLinks.get(0));
         return searchResultLinks.get(0).getText();
     }
 }

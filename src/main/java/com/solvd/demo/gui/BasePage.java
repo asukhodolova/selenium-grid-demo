@@ -1,4 +1,4 @@
-package com.solvd.demo;
+package com.solvd.demo.gui;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public abstract class BasePage {
-
     private static final Integer DEFAULT_WAIT = 10;
 
     protected RemoteWebDriver driver;
@@ -38,13 +37,5 @@ public abstract class BasePage {
 
     protected void waitForElementPresent(String xpathLocator) {
         new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_WAIT)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathLocator)));
-    }
-
-    protected void wait(int seconds) {
-        try {
-            Thread.sleep(1000 * seconds);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

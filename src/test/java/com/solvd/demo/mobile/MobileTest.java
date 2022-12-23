@@ -42,6 +42,7 @@ public class MobileTest extends BaseTest {
                     capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Pixel_3a_API_33_arm64-v8a");
                     capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
                     capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "uiautomator2");
+                    capabilities.setCapability("uiautomator2ServerInstallTimeout", "40000");
                     driver = new AndroidDriver(new URL(SELENIUM_URL), capabilities);
                     break;
                 default:
@@ -50,7 +51,7 @@ public class MobileTest extends BaseTest {
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(DEFAULT_IMPLICIT_WAIT));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error while creating a session");
+            throw new RuntimeException("Error while creating a session", e);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.solvd.demo.gui;
 
-import com.solvd.demo.BasePage;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -31,7 +30,6 @@ public class GoogleSearchPage extends BasePage {
     }
 
     public GoogleSearchResultsPage performSearch(String searchValue) {
-        wait(3);
         searchInput.sendKeys(searchValue);
         searchInput.sendKeys(Keys.ENTER);
         return new GoogleSearchResultsPage(driver);
