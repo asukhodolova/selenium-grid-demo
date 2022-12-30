@@ -43,6 +43,8 @@ This service endpoint can be an Appium server or any other service (Sauce Labs, 
 ```
 5. check connected nodes via http://localhost:4444/ui
 
+**NOTE**: iOS/Android config files have a relay to Appium 2.x url = http://localhost:4723. Necessary to add /wd/hub to run on Appium version 1.x.
+
 ### Hub & Node for browsers (in Docker)
  
 Use the appropriate docker-compose file for your architecture: amd64 (Intel) or arm64 (M1):
@@ -73,22 +75,24 @@ To record your WebDriver session, you need to add a `se:recordVideo` field set t
 
 `docker-compose -f docker-compose-full-grid.yml up`
 
+## Customize a node
 
-## Differences with GRID 3
-- 3 modes: standalone, hub&node, fully distributed (Event Bus, Session Queue, Session Map, Distributor, Router, Node(s))
-- hub url without /wd/hub
-- can be used with Docker and Kubernetes
-- Selenium WebDriver in Selenium 4 is W3C Compliant, the tests can directly communicate with the web browser (WebDriver and web browsers are on the same page now -> you can expect less flakiness)
-- based on the point above, stop using DesiredCapabilities (this class is deprecated), instead we have to use FirefoxOptions, ChromeOptions etc.
-- an up-to-date list of standard capabilities can be found at [W3C WebDriver](https://www.w3.org/TR/webdriver1/#capabilities), any capability that is not contained in the list above, needs to include a vendor prefix
-- automatically detects the Selenium drivers you have in the system. It is recommended that either all the executables are in the PATH or in the folder where the Selenium jar file is present
-- Selenium Manager is introduced
-- node registration changed: Selenium 3 - via http calls, Selenium 4 - done through Event bus messages
-- changes in methods or their deprecation:
-  - Find element(s) utility methods in Java have changed
-  - Waits and Timeout: the parameters received in Timeout have switched from expecting (long time, TimeUnit unit) to expect (Duration duration), same for WebDriverWait/FluentWait
-  - Merging capabilities is no longer changing the calling object
-  - new methods in Actions
-- new in Grid 4
-  - screenshot of an element
-  - relative locators
+As an example, `com.solvd.demo.custom.CustomNode` is created that does following: 
+before new session is being created on a node, it checks counter and fails (session will not be created) 
+for every second request for this custom node - `CustomNodeException`.
+
+1. Build a jar of this project by `gradle clean jar`
+2. Start a hub - `java -jar selenium-server-4.7.0.jar hub`
+3. Start a node using the command below where 
+   --ext - path to the jar
+   --node-implementation - implementation class
+
+```
+   java -jar selenium-server-4.7.0.jar \
+   --ext ./build/libs/selenium-grid-demo-1.0-SNAPSHOT.jar node \
+   --node-implementation com.solvd.demo.custom.CustomNode \
+   --config ./src/test/resources/configs/local/browsers_node.toml \
+   --hub http://192.168.88.25:4444 --port 7777
+```
+
+4. Run the tests - every second request will fail on this node

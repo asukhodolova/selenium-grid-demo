@@ -21,10 +21,21 @@ dependencies {
     // SELENIUM
     implementation 'io.github.bonigarcia:webdrivermanager:5.3.1'
     implementation 'org.seleniumhq.selenium:selenium-java:4.7.0'
+    implementation 'org.seleniumhq.selenium:selenium-grid:4.7.0'
     implementation 'io.appium:java-client:8.3.0'
 
     // TestNG
     testImplementation 'org.testng:testng:7.7.0'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
 }
 
 test {
